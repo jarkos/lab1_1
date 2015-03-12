@@ -20,23 +20,24 @@ import java.util.Date;
 
 public class OfferItem {
 
-	private Product product;	
-	private String discountCause;
-	private BigDecimal discount;
+	private Product product;
+	private Discount discount;
+//	private String discountCause;
+	private BigDecimal discountToChange;
 
 	public OfferItem(Product product) {
 		this(product, null, null);
 	}
 
-	public OfferItem(Product product, BigDecimal discount, String discountCause) 
+	public OfferItem(Product product, BigDecimal discountToChange, Discount discount) 
 	{
 		this.product = product;
+		this.discountToChange = discountToChange;
 		this.discount = discount;
-		this.discountCause = discountCause;
 
 		BigDecimal discountValue = new BigDecimal(0);
 		if (discount != null)
-			discountValue = discountValue.subtract(discount);
+			discountValue = discountValue.subtract(discountToChange);
 
 		product.totalCost = product.Price.multiply(new BigDecimal(product.quantity)).subtract(discountValue);
 	}
@@ -70,11 +71,11 @@ public class OfferItem {
 	}
 
 	public BigDecimal getDiscount() {
-		return discount;
+		return discountToChange;
 	}
 
 	public String getDiscountCause() {
-		return discountCause;
+		return discount.discountCause;
 	}
 
 	public int getQuantity() {
@@ -86,7 +87,7 @@ public class OfferItem {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result
-				+ ((discount == null) ? 0 : discount.hashCode());
+				+ ((discountToChange == null) ? 0 : discountToChange.hashCode());
 		result = prime * result + ((product.Name == null) ? 0 : product.Name.hashCode());
 		result = prime * result + ((product.Price == null) ? 0 : product.Price.hashCode());
 		result = prime * result
@@ -107,10 +108,10 @@ public class OfferItem {
 		if (getClass() != obj.getClass())
 			return false;
 		OfferItem other = (OfferItem) obj;
-		if (discount == null) {
-			if (other.discount != null)
+		if (discountToChange == null) {
+			if (other.discountToChange != null)
 				return false;
-		} else if (!discount.equals(other.discount))
+		} else if (!discountToChange.equals(other.discountToChange))
 			return false;
 		if (product.Name == null) {
 			if (other.product.Name != null)
