@@ -22,24 +22,22 @@ public class OfferItem {
 
 	private Product product;
 	private Discount discount;
-//	private String discountCause;
-	private BigDecimal discountToChange;
+	private int quantity=0;
 
 	public OfferItem(Product product) {
-		this(product, null, null);
+		this(product, null);
 	}
 
-	public OfferItem(Product product, BigDecimal discountToChange, Discount discount) 
+	public OfferItem(Product product, Discount discount) 
 	{
 		this.product = product;
-		this.discountToChange = discountToChange;
 		this.discount = discount;
 
 		BigDecimal discountValue = new BigDecimal(0);
 		if (discount != null)
-			discountValue = discountValue.subtract(discountToChange);
+			discountValue = discountValue.subtract(discount.value);
 
-		product.totalCost = product.Price.multiply(new BigDecimal(product.quantity)).subtract(discountValue);
+		product.totalCost = product.Price.multiply(new BigDecimal(quantity)).subtract(discountValue);
 	}
 
 	public String getProductId() {
@@ -67,11 +65,11 @@ public class OfferItem {
 	}
 
 	public String getTotalCostCurrency() {
-		return product.currency;
+		return discount.currency;
 	}
 
 	public BigDecimal getDiscount() {
-		return discountToChange;
+		return discount.value;
 	}
 
 	public String getDiscountCause() {
@@ -79,7 +77,7 @@ public class OfferItem {
 	}
 
 	public int getQuantity() {
-		return product.quantity;
+		return quantity;
 	}
 
 	@Override
@@ -87,13 +85,13 @@ public class OfferItem {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result
-				+ ((discountToChange == null) ? 0 : discountToChange.hashCode());
+				+ ((discount.value == null) ? 0 : discount.value.hashCode());
 		result = prime * result + ((product.Name == null) ? 0 : product.Name.hashCode());
 		result = prime * result + ((product.Price == null) ? 0 : product.Price.hashCode());
 		result = prime * result
 				+ ((product.Id == null) ? 0 : product.Id.hashCode());
 		result = prime * result + ((product.Type == null) ? 0 : product.Type.hashCode());
-		result = prime * result + product.quantity;
+		result = prime * result + quantity;
 		result = prime * result
 				+ ((product.totalCost == null) ? 0 : product.totalCost.hashCode());
 		return result;
@@ -108,10 +106,10 @@ public class OfferItem {
 		if (getClass() != obj.getClass())
 			return false;
 		OfferItem other = (OfferItem) obj;
-		if (discountToChange == null) {
-			if (other.discountToChange != null)
+		if (discount.value == null) {
+			if (other.discount.value != null)
 				return false;
-		} else if (!discountToChange.equals(other.discountToChange))
+		} else if (!discount.value.equals(other.discount.value))
 			return false;
 		if (product.Name == null) {
 			if (other.product.Name != null)
@@ -130,7 +128,7 @@ public class OfferItem {
 			return false;
 		if (product.Type != other.product.Type)
 			return false;
-		if (product.quantity != other.product.quantity)
+		if (quantity != other.quantity)
 			return false;
 		if (product.totalCost == null) {
 			if (other.product.totalCost != null)
@@ -166,7 +164,7 @@ public class OfferItem {
 		if (product.Type != other.product.Type)
 			return false;
 
-		if (product.quantity != other.product.quantity)
+		if (quantity != other.quantity)
 			return false;
 
 		BigDecimal max, min;

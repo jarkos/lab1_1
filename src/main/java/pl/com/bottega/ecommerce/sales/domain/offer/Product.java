@@ -10,20 +10,16 @@ public class Product
 	String Name;
 	Date SnapshotDate;
 	String Type;
-	int quantity;
 	BigDecimal totalCost;
-	String currency;
 	
 	Product(String productId,BigDecimal productPrice,String productName,Date productSnapshotDate,
-			String productType,int quantity,BigDecimal totalCost,String currency)
+			String productType,BigDecimal totalCost,String currency)
 	{
 		this.Id = productId;
 		this.Price = productPrice;
 		this.Name = productName;
 		this.SnapshotDate = productSnapshotDate;
 		this.Type = productType;
-		this.quantity = quantity;
 		this.totalCost = totalCost;
-		this.currency = currency;
 	}
 }
